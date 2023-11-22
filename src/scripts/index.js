@@ -2,9 +2,8 @@ import '../pages/index.css'; // добавьте импорт главного �
 import initialCards from './cards';
 import {
   openPopup,
-  closePopup,
   closePopupOnClickOverlay,
-  closePopupKeyEsc
+  openPopupEdit
 } from '../components/modal.js';
 
 const cardsList = document.querySelector('.places__list');
@@ -43,7 +42,15 @@ const editButton = document.querySelector('.profile__edit-button');
 const popupEdit = document.querySelector('.popup_type_edit');
 
 editButton.addEventListener('click', () => {
-  openPopup(popupEdit);
+  openPopupEdit(popupEdit);
+});
+
+//Слушатель открытия Popup new-card
+const addButton = document.querySelector('.profile__add-button');
+const popupNewCard = document.querySelector('.popup_type_new-card');
+
+addButton.addEventListener('click', () => {
+  openPopup(popupNewCard);
 });
 
 //Слушатель закрытия Popup кликом на оверлей и на крастик
