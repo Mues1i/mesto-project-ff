@@ -2,8 +2,8 @@ import '../pages/index.css'; // добавьте импорт главного �
 import initialCards from './cards';
 import {
   openPopup,
+  closePopup,
   closePopupOnClickOverlay,
-  openPopupEdit
 } from '../components/modal.js';
 
 const cardsList = document.querySelector('.places__list');
@@ -37,6 +37,19 @@ initialCards.forEach((card) => {
   cardsList.append(createCard(card, deleteCard));
 });
 
+//Открытие popup профиля
+const nameInput = document.querySelector('.popup__input_type_name');
+const jobInput = document.querySelector('.popup__input_type_description');
+
+const nameProfile = document.querySelector('.profile__title');
+const jobProfile = document.querySelector('.profile__description');
+
+function openPopupEdit(popupEdit) {
+  openPopup(popupEdit);
+  nameInput.value = nameProfile.textContent;
+  jobInput.value = jobProfile.textContent;
+}
+
 //Слушатель открытия Popup Профиля
 const editButton = document.querySelector('.profile__edit-button');
 const popupEdit = document.querySelector('.popup_type_edit');
@@ -59,3 +72,15 @@ const popupList = document.querySelectorAll('.popup')
 popupList.forEach(popup => {
   popup.addEventListener('click', closePopupOnClickOverlay);
 })
+
+//Сохранение профиля
+const formElementEdit = popupEdit.querySelector('.popup__form');
+
+function handleFormSubmitEdit(evt) {
+  evt.preventDefault();
+  nameProfile.textContent = nameInput.value;
+  jobProfile.textContent = jobInput.value;
+  closePopup(popupEdit);
+}
+
+formElementEdit.addEventListener('submit', handleFormSubmitEdit)

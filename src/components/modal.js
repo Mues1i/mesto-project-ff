@@ -4,19 +4,6 @@ export function openPopup(popup) {
   document.addEventListener('keydown', closePopupKeyEsc);
 }
 
-//Открытие popup профиля
-const popupNameInputEdit = document.querySelector('.popup__input_type_name');
-const popupDescriptionInputEdit = document.querySelector('.popup__input_type_description');
-
-const nameProfile = document.querySelector('.profile__title');
-const descriptionProfile = document.querySelector('.profile__description');
-
-export function openPopupEdit(popupEdit) {
-  openPopup(popupEdit);
-  popupNameInputEdit.value = nameProfile.textContent;
-  popupDescriptionInputEdit.value = descriptionProfile.textContent;
-}
-
 //Универсальное закрытие Popup
 export function closePopup(popup) {
   popup.classList.remove('popup_is-opened');
@@ -31,7 +18,7 @@ export function closePopupOnClickOverlay(evt) {
 }
 
 //Закрытие окна по нажатию Esc
-export function closePopupKeyEsc(evt) {
+function closePopupKeyEsc(evt) {
   if (evt.key === 'Escape') {
     const popupOpened = document.querySelector('.popup_is-opened');
     closePopup(popupOpened);
