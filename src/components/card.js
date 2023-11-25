@@ -7,8 +7,8 @@ import {
   popupCaptionImage
 } from '../index.js';
 
-export default function createCard(cardItem, deleteCard) {
-  const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
+export default function createCard(cardItem, handleDeleteCard, handleLikeCard, handleOpenPopupImage) {
+  const cardElement = getCardTemplate();
   const cardImage = cardElement.querySelector('.card__image');
   const cardNameImage = cardElement.querySelector('.card__title');
   const deleteButton = cardElement.querySelector('.card__delete-button');
@@ -18,21 +18,34 @@ export default function createCard(cardItem, deleteCard) {
   cardImage.alt = cardItem.name;
   cardImage.src = cardItem.link;
 
-  //Удаление карточки
-  deleteButton.addEventListener('click', deleteCard);
+  //Функционал клонирования шаблона
+  function getCardTemplate() {
+    return cardTemplate.querySelector('.card').cloneNode(true);
+  }
 
-  //Лайк карточки
-  likeButton.addEventListener('click', () => {
+  //Удаление карточки
+  deleteButton.addEventListener('click', handleDeleteCard);
+  
+  //Поставить/удалить лайк
+  function handleLikeCard(likeButton) {
     likeButton.classList.toggle('card__like-button_is-active');
-  })
+  }
+  
+  likeButton.addEventListener('click', () => {
+    handleLikeCard(likeButton);
+  });
   
   //Открытие popup изображения
-  cardImage.addEventListener('click', () => {
+  function handleOpenPopupImage(cardItem) {
     openModal(popupImage);
     popupCaptionImage.textContent = cardItem.name;
     popupNameImage.alt = cardItem.name;
     popupNameImage.src = cardItem.link;
-  })
+  }
+
+  cardImage.addEventListener('click', () => {
+    handleOpenPopupImage(cardItem);
+  });
 
   return cardElement;
 }

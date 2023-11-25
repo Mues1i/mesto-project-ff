@@ -9,7 +9,7 @@ import {
 
 const popupList = document.querySelectorAll('.popup')
 
-const cardsList = document.querySelector('.places__list');
+const placesList = document.querySelector('.places__list');
 export const cardTemplate = document.querySelector('#card-template').content;
 
 //const для popup image
@@ -33,8 +33,6 @@ const formElementCard = popupNewCard.querySelector('.popup__form');
 const cardNameInput = formElementCard.querySelector('.popup__input_type_card-name');
 const cardUrlInput = formElementCard.querySelector('.popup__input_type_url');
 
-const placesList = document.querySelector('.places__list');
-
 //Функция удаления карточки
 function deleteCard(event) {
   const cardElement = event.target.closest('.card');
@@ -43,7 +41,7 @@ function deleteCard(event) {
 
 // Вывод карточек на страницу
 initialCards.forEach((card) => {
-  cardsList.append(createCard(card, deleteCard));
+  placesList.append(createCard(card, deleteCard));
 });
 
 //Открытие popup профиля
@@ -71,10 +69,6 @@ function handleFormSubmitCard(evt) {
   closeModal(popupNewCard);
   formElementCard.reset();
 }
-
-initialCards.forEach((card) => {
-  placesList.append(createCard(card));
-});
 
 //Слушатель открытия Popup Профиля
 editButton.addEventListener('click', () => {
