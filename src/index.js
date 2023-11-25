@@ -1,10 +1,10 @@
-import '../pages/index.css'; // добавьте импорт главного файла стилей
-import initialCards from '../components/cards.js';
+import './pages/index.css'; // добавьте импорт главного файла стилей
+import initialCards from './components/cards.js';
 import {
   openModal,
   closeModal,
   closePopupOnClickOverlay,
-} from '../components/modal.js';
+} from './components/modal.js';
 
 const cardsList = document.querySelector('.places__list');
 const cardTemplate = document.querySelector('#card-template').content;
