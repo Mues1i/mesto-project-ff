@@ -1,13 +1,7 @@
 // Функция создания карточки
-import { openModal } from './modal.js';
-import {
-  cardTemplate,
-  popupImage,
-  popupNameImage,
-  popupCaptionImage
-} from '../index.js';
+import { cardTemplate } from '../index.js';
 
-export default function createCard(cardItem, handleDeleteCard, handleLikeCard, handleOpenPopupImage) {
+export default function createCard(cardItem, deleteHandler, likeHandler, openImageHandler) {
   const cardElement = getCardTemplate();
   const cardImage = cardElement.querySelector('.card__image');
   const cardNameImage = cardElement.querySelector('.card__title');
@@ -24,27 +18,12 @@ export default function createCard(cardItem, handleDeleteCard, handleLikeCard, h
   }
 
   //Удаление карточки
-  deleteButton.addEventListener('click', handleDeleteCard);
+  deleteButton.addEventListener('click', deleteHandler); //Удаление карточки тоже объявил в глобальной области
   
-  //Поставить/удалить лайк
-  function handleLikeCard(likeButton) {
-    likeButton.classList.toggle('card__like-button_is-active');
-  }
-  
-  likeButton.addEventListener('click', () => {
-    handleLikeCard(likeButton);
-  });
-  
-  //Открытие popup изображения
-  function handleOpenPopupImage(cardItem) {
-    openModal(popupImage);
-    popupCaptionImage.textContent = cardItem.name;
-    popupNameImage.alt = cardItem.name;
-    popupNameImage.src = cardItem.link;
-  }
+  likeButton.addEventListener('click', likeHandler);
 
   cardImage.addEventListener('click', () => {
-    handleOpenPopupImage(cardItem);
+    openImageHandler(cardItem);
   });
 
   return cardElement;

@@ -8,7 +8,6 @@ import {
 } from './components/modal.js';
 
 const popupList = document.querySelectorAll('.popup')
-
 const placesList = document.querySelector('.places__list');
 export const cardTemplate = document.querySelector('#card-template').content;
 
@@ -34,14 +33,27 @@ const cardNameInput = formElementCard.querySelector('.popup__input_type_card-nam
 const cardUrlInput = formElementCard.querySelector('.popup__input_type_url');
 
 //Функция удаления карточки
-function deleteCard(event) {
+function handleDeleteCard(event) {
   const cardElement = event.target.closest('.card');
   cardElement.remove();
 }
 
+//Поставить/удалить лайк
+function handleLikeCard(event) {
+  event.target.classList.toggle('card__like-button_is-active');
+}
+
+  //Открытие popup изображения
+function handleOpenPopupImage(cardItem) {
+  openModal(popupImage);
+  popupCaptionImage.textContent = cardItem.name;
+  popupNameImage.alt = cardItem.name;
+  popupNameImage.src = cardItem.link;
+}
+
 // Вывод карточек на страницу
 initialCards.forEach((card) => {
-  placesList.append(createCard(card, deleteCard));
+  placesList.append(createCard(card, handleDeleteCard, handleLikeCard, handleOpenPopupImage));
 });
 
 //Открытие popup профиля
@@ -65,7 +77,7 @@ function handleFormSubmitCard(evt) {
   placesList.prepend(createCard({
     name: cardNameInput.value,
     link: cardUrlInput.value
-  }));
+  }, handleDeleteCard, handleLikeCard, handleOpenPopupImage));
   closeModal(popupNewCard);
   formElementCard.reset();
 }
