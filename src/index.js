@@ -138,17 +138,48 @@ const isValid = (formElement, inputElement, validationConfig) => {
   }
 };
 
+const hasInvalidInput = (inputList) => {
+  // проходим по этому массиву методом some
+  return inputList.some((inputElement) => {
+        // Если поле не валидно, колбэк вернёт true
+    // Обход массива прекратится и вся функция
+    // hasInvalidInput вернёт true
+
+    return !inputElement.validity.valid;
+  })
+}; 
+
+const disableButton = (buttonElement, validationConfig) => { 
+  buttonElement.classList.add(validationConfig.inactiveButtonClass); 
+  buttonElement.disabled = true; 
+} 
+const enableButton = (buttonElement, validationConfig) => { 
+  buttonElement.classList.remove(validationConfig.inactiveButtonClass); 
+  buttonElement.disabled = false; 
+}
+
+const toggleButtonState = (inputList, buttonElement, validationConfig) => {
+  // Если есть хотя бы один невалидный инпут
+  if (hasInvalidInput(inputList)) {
+    // сделай кнопку неактивной
+    disableButton(buttonElement, validationConfig);
+  } else {
+    // иначе сделай кнопку активной
+    enableButton(buttonElement, validationConfig);
+  }
+}; 
+
 const setEventListeners = (formElement, validationConfig) => {
   const inputList = Array.from(formElement.querySelectorAll(validationConfig.inputSelector));
   const buttonElement = formElement.querySelector(validationConfig.submitButtonSelector);
 
-  //toggleButtonState(inputList, buttonElement);
+  toggleButtonState(inputList, buttonElement, validationConfig);
 
   inputList.forEach((inputElement) => {
     inputElement.addEventListener('input', () => {
       isValid(formElement, inputElement, validationConfig);
            // Вызовем toggleButtonState и передадим ей массив полей и кнопку
-      toggleButtonState(inputList, buttonElement);
+      toggleButtonState(inputList, buttonElement, validationConfig);
     });
   });
 };
@@ -161,27 +192,3 @@ const enableValidation = (validationConfig) => {
 };
 
 enableValidation(validationConfig);
-
-const hasInvalidInput = (inputList) => {
-  // проходим по этому массиву методом some
-  return inputList.some((inputElement) => {
-        // Если поле не валидно, колбэк вернёт true
-    // Обход массива прекратится и вся функция
-    // hasInvalidInput вернёт true
-
-    return !inputElement.validity.valid;
-  })
-}; 
-
-const toggleButtonState = (inputList, buttonElement) => {
-  // Если есть хотя бы один невалидный инпут
-  if (hasInvalidInput(inputList)) {
-    // сделай кнопку неактивной
-        buttonElement.disabled = true;
-    buttonElement.classList.add(validationConfig.inactiveButtonClass);
-  } else {
-        // иначе сделай кнопку активной
-        buttonElement.disabled = false;
-    buttonElement.classList.remove(validationConfig.inactiveButtonClass);
-  }
-}; 
