@@ -107,7 +107,7 @@ formElementCard.addEventListener('submit', handleFormSubmitCard);
 const validationConfig = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__submit',
+  submitButtonSelector: '.popup__button',
   inactiveButtonClass: 'popup__button_disabled',
   inputErrorClass: 'popup__input_type_error',
   errorClass: 'popup__input-error_visible'
@@ -140,9 +140,15 @@ const isValid = (formElement, inputElement, validationConfig) => {
 
 const setEventListeners = (formElement, validationConfig) => {
   const inputList = Array.from(formElement.querySelectorAll(validationConfig.inputSelector));
+  const buttonElement = formElement.querySelector(validationConfig.submitButtonSelector);
+
+  //toggleButtonState(inputList, buttonElement);
+
   inputList.forEach((inputElement) => {
     inputElement.addEventListener('input', () => {
-      isValid(formElement, inputElement, validationConfig)
+      isValid(formElement, inputElement, validationConfig);
+           // Вызовем toggleButtonState и передадим ей массив полей и кнопку
+      toggleButtonState(inputList, buttonElement);
     });
   });
 };
@@ -155,3 +161,27 @@ const enableValidation = (validationConfig) => {
 };
 
 enableValidation(validationConfig);
+
+const hasInvalidInput = (inputList) => {
+  // проходим по этому массиву методом some
+  return inputList.some((inputElement) => {
+        // Если поле не валидно, колбэк вернёт true
+    // Обход массива прекратится и вся функция
+    // hasInvalidInput вернёт true
+
+    return !inputElement.validity.valid;
+  })
+}; 
+
+const toggleButtonState = (inputList, buttonElement) => {
+  // Если есть хотя бы один невалидный инпут
+  if (hasInvalidInput(inputList)) {
+    // сделай кнопку неактивной
+        buttonElement.disabled = true;
+    buttonElement.classList.add(validationConfig.inactiveButtonClass);
+  } else {
+        // иначе сделай кнопку активной
+        buttonElement.disabled = false;
+    buttonElement.classList.remove(validationConfig.inactiveButtonClass);
+  }
+}; 
