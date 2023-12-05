@@ -82,27 +82,6 @@ function handleFormSubmitCard(evt) {
   formElementCard.reset();
 }
 
-//Слушатель открытия Popup Профиля
-editButton.addEventListener('click', () => {
-  openPopupEdit(popupEdit);
-});
-
-//Слушатель открытия Popup new-card
-addButton.addEventListener('click', () => {
-  openModal(popupNewCard);
-});
-
-//Слушатель закрытия Popup кликом на оверлей и на крастик
-popupList.forEach(popup => {
-  popup.addEventListener('click', closePopupOnClickOverlay);
-})
-
-//Сохранение popup Edit
-formElementEdit.addEventListener('submit', handleFormSubmitEdit)
-
-//Сохранение карточки
-formElementCard.addEventListener('submit', handleFormSubmitCard);
-
 // ВАЛИДАЦИЯ
 const validationConfig = {
   formSelector: '.popup__form',
@@ -131,6 +110,12 @@ const hideInputError = (formElement, inputElement, validationConfig) => {
 
 //Проверка валидности поля
 const isValid = (formElement, inputElement, validationConfig) => {
+  if (inputElement.validity.patternMismatch) {
+    inputElement.setCustomValidity(inputElement.dataset.errorMessage);
+  } else {
+    inputElement.setCustomValidity("");
+  }
+
   if (!inputElement.validity.valid) {
     showInputError(formElement, inputElement, inputElement.validationMessage, validationConfig);
   } else {
@@ -191,4 +176,37 @@ const enableValidation = (validationConfig) => {
   });
 };
 
+/* const clearValidation = (formElement, validationConfig) => {
+  const inputList = Array.from(formElement.querySelectorAll(validationConfig.inputSelector));
+  const buttonElement = formElement.querySelector(validationConfig.submitButtonSelector);
+
+  inputList.forEach((inputElement) => {
+    hideInputError(formElement, inputElement, validationConfig);
+  });
+
+  toggleButtonState(formElement, buttonElement, validationConfig);
+} */
+
 enableValidation(validationConfig);
+//КОНЕЦ ВАЛИДАЦИЙ
+
+//Слушатель открытия Popup Профиля
+editButton.addEventListener('click', () => {
+  openPopupEdit(popupEdit);
+});
+
+//Слушатель открытия Popup new-card
+addButton.addEventListener('click', () => {
+  openModal(popupNewCard);
+});
+
+//Слушатель закрытия Popup кликом на оверлей и на крастик
+popupList.forEach(popup => {
+  popup.addEventListener('click', closePopupOnClickOverlay);
+})
+
+//Сохранение popup Edit
+formElementEdit.addEventListener('submit', handleFormSubmitEdit)
+
+//Сохранение карточки
+formElementCard.addEventListener('submit', handleFormSubmitCard);
